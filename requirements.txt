@@ -1,0 +1,15 @@
+aiohttp==3.8.1
+annoy==1.17.0
+Flask==2.1.2
+Flask-Cors==3.0.10
+numpy
+pandas
+python-dotenv
+pytorch-tabnet==3.1.1
+scikit-learn
+scipy
+snowflake-connector-python
+tecton==0.4.0b28
+torch==1.10.0
+tqdm==4.41.1
+urllib3==1.26.9
