@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Real-Time Recommendation Demo Page</title>
+  </head>
+  <body>
+    <h1>Real-Time Recommendations!</h1>
+    <label for="userSelector">User Id:</label>
+    <select name="userSelector" id="userSelector">
+      <option value="138024">138024</option>
+      <option value="100091">100091</option>
+      <option value="18786">18786</option>
+      <option value="16265">16265</option>
+      <option value="43258">43258</option>
+      <option value="115548">115548</option>
+    </select>
+
+    <label for="movieSelector">Movie Id:</label>
+    <select name="movieSelector" id="movieSelector">
+      <option value="318">Shawshank Redemption, The (1994)</option>
+      <option value="122912">Avengers: Infinity War - Part I</option>
+      <option value="3114">Toy Story 2 (1995)</option>
+      <option value="159817">Planet Earth</option>
+    </select>
+    <button id='getRecommendationsButton'>Click me</button>
+    <div id='recommendationsContainer'></div>
+    <h4 id='date'></h4>
+  </body>
+</html>
+<script src="./javascript/bundle.js"></script>
