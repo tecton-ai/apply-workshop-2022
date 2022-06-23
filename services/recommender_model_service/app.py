@@ -45,4 +45,5 @@ start = time.time()
 def get_predicted_rating():
     content = request.get_json(silent=True)
     df = pickle.loads(base64.b64decode(content["df"].encode()))
-    return {"predictions": model.predict(df)}
+    preds = model.predict(df)
+    return {"predictions": preds}
