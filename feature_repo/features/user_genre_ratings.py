@@ -1,8 +1,8 @@
-from tecton import batch_feature_view, FeatureAggregation
+from tecton import batch_feature_view, Aggregation, FilteredSource
 from entities import user
 from data_sources.movies import movies
 from data_sources.ratings import ratings
-from datetime import datetime
+from datetime import datetime, timedelta
 
 genres = [
     "Action",
@@ -27,30 +27,30 @@ genres = [
 
 def gen_preference_feature(genre):
     @batch_feature_view(
-        sources=[ratings, movies],
+        sources=[FilteredSource(ratings), movies],
         entities=[user],
-        mode='snowflake_sql',
+        mode='spark_sql',
         online=True,
-        aggregation_slide_period='1d',
+        offline=True,
+        aggregation_interval=timedelta(days=1),
         aggregations=[
-            FeatureAggregation(column='RATING', function='mean', time_windows=['730d']),
+            Aggregation(column='rating', function='mean', time_window=timedelta(days=365))
         ],
         feature_start_time=datetime(1997, 1, 1),
         owner='david@tecton.ai',
         description=f'Average rating user has given to {genre} movies in various time windows',
-        name_override=f"user_{genre.replace('-','_')}_rating_history",
-        family='Recommendations'
+        name=f"user_{genre.replace('-','_').lower()}_rating_history",
     )
     def fv(ratings, movies):
         return f'''
             SELECT
-                {ratings}.USER_ID as USER_ID,
-                RATING,
-                TIMESTAMP
+                {ratings}.user_id as user_id,
+                rating,
+                timestamp
             FROM
-                {ratings} inner join {movies} on {ratings}.MOVIE_ID = {movies}.MOVIE_ID
+                {ratings} inner join {movies} on {ratings}.movie_id = {movies}.movie_id
             WHERE
-                contains(genres, '{genre}')
+                genres like '%{genre}%'
             '''
     return fv
 

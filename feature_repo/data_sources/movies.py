@@ -1,13 +1,18 @@
-from tecton import BatchDataSource, SnowflakeDSConfig
+from tecton import BatchSource, HiveConfig
 from datetime import datetime
 
 
-movies = BatchDataSource(
+# partition_columns = [
+#     DatetimePartitionColumn(column_name="partition_0", datepart="year", zero_padded=True),
+#     DatetimePartitionColumn(column_name="partition_1", datepart="month", zero_padded=True),
+#     DatetimePartitionColumn(column_name="partition_2", datepart="day", zero_padded=True),
+# ]
+
+movies = BatchSource(
     name="movies",
-    batch_ds_config=SnowflakeDSConfig(
-      database="DEV_DAVID",
-      schema="MOVIELENS_25M",
-      table="MOVIES",
-      timestamp_key="CREATED_AT",
+    batch_config=HiveConfig(
+      database="demo_recsys",
+      table="movies",
+      timestamp_field="created_at",
     ),
 )
