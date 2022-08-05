@@ -1,8 +1,8 @@
-from tecton import batch_feature_view, FeatureAggregation
+from tecton import batch_feature_view, Aggregation
 from entities import user
 from data_sources.movies import movies
 from data_sources.ratings import ratings
-from datetime import datetime
+from datetime import datetime, timedelta
 
 genres = [
     "Action",
@@ -31,15 +31,14 @@ def gen_preference_feature(genre):
         entities=[user],
         mode='snowflake_sql',
         online=True,
-        aggregation_slide_period='1d',
+        aggregation_interval=timedelta(days=1),
         aggregations=[
-            FeatureAggregation(column='RATING', function='mean', time_windows=['730d']),
+            Aggregation(column='RATING', function='mean', time_window=timedelta(days=730)),
         ],
         feature_start_time=datetime(1997, 1, 1),
         owner='david@tecton.ai',
         description=f'Average rating user has given to {genre} movies in various time windows',
-        name_override=f"user_{genre.replace('-','_')}_rating_history",
-        family='Recommendations'
+        name=f"user_{genre.replace('-','_')}_rating_history",
     )
     def fv(ratings, movies):
         return f'''

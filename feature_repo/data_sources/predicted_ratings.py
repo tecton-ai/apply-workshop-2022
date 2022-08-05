@@ -1,13 +1,13 @@
-from tecton import BatchDataSource, SnowflakeDSConfig
+from tecton import BatchSource, SnowflakeConfig
 from datetime import datetime
 
 
-predicted_ratings = BatchDataSource(
+predicted_ratings = BatchSource(
     name="predicted_ratings",
-    batch_ds_config=SnowflakeDSConfig(
+    batch_config=SnowflakeConfig(
       database="DEV_DAVID",
       schema="MOVIELENS_25M",
       table="USER_PREDICTED_RATINGS",
-      timestamp_key="CREATED_AT",
+      timestamp_field="CREATED_AT",
     ),
 )

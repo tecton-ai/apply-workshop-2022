@@ -1,16 +1,16 @@
-from tecton import batch_feature_view, FeatureAggregation, materialization_context
+from tecton import batch_feature_view, FilteredSource, materialization_context
 from entities import user
 from data_sources.ratings import ratings
-from datetime import datetime
+from datetime import datetime, timedelta
 #
 #
 @batch_feature_view(
-    sources=[ratings],
+    sources=[FilteredSource(ratings)],
     entities=[user],
     mode='snowflake_sql',
     online=True,
-    batch_schedule='1d',
-    ttl='9999d',
+    batch_schedule=timedelta(days=1),
+    ttl=timedelta(days=9999),
     feature_start_time=datetime(2022, 5, 1),
     owner='david@tecton.ai',
     description='List of movies watched by a user in the last 30 days'

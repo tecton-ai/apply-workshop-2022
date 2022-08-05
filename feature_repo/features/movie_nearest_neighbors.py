@@ -1,16 +1,16 @@
-from tecton import batch_feature_view, FeatureAggregation, materialization_context
+from tecton import batch_feature_view, FilteredSource
 from entities import movie
 from data_sources.movie_nearest_neighbors import movie_nearest_neighbors
-from datetime import datetime
+from datetime import datetime, timedelta
 #
 #
 @batch_feature_view(
-    sources=[movie_nearest_neighbors],
+    sources=[FilteredSource(movie_nearest_neighbors)],
     entities=[movie],
     mode='snowflake_sql',
     online=True,
-    batch_schedule='1d',
-    ttl='9999d',
+    batch_schedule=timedelta(days=1),
+    ttl=timedelta(days=9999),
     feature_start_time=datetime(2022, 5, 1),
     owner='david@tecton.ai',
     description='Nearest neighbors of a given movie'

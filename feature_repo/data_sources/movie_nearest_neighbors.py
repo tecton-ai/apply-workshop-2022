@@ -1,13 +1,13 @@
-from tecton import BatchDataSource, SnowflakeDSConfig
+from tecton import BatchSource, SnowflakeConfig
 from datetime import datetime
 
 
-movie_nearest_neighbors = BatchDataSource(
+movie_nearest_neighbors = BatchSource(
     name="movie_nearest_neighbors",
-    batch_ds_config=SnowflakeDSConfig(
+    batch_config=SnowflakeConfig(
       database="DEV_DAVID",
       schema="MOVIELENS_25M",
       table="MOVIE_NEAREST_NEIGHBORS",
-      timestamp_key="CREATED_AT",
+      timestamp_field="CREATED_AT",
     ),
 )
